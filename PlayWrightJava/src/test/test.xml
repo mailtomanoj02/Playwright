@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="FhWeb_UK_Nativewebsites_Star" parallel="tests" thread-count="2">
+
+    <parameter name="runIn" value="local"></parameter>
+    <parameter name="url" value="https://foodhub.co.uk/"></parameter>
+    <test name="TestRun">
+        <parameter name="browser" value="chrome"></parameter>
+        <parameter name="platform" value="MAC"></parameter>
+        <classes>
+            <class name="testCases.TC_HomePage"></class>
+
+        </classes>
+    </test>
+
+<!--    <test name="TestRun2">-->
+<!--        <parameter name="browser" value="safari"></parameter>-->
+<!--        <parameter name="platform" value="Windows"></parameter>-->
+<!--        <classes>-->
+<!--            <class name="testCases.TC_HomePage"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="TestRun3">-->
+<!--        <parameter name="browser" value="chrome"></parameter>-->
+<!--        <parameter name="platform" value="Windows"></parameter>-->
+<!--        <classes>-->
+<!--            <class name="testCases.TC_HomePage"></class>-->
+<!--            <class name="testCases.TC_HomePage"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="TestRun4">-->
+<!--        <parameter name="browser" value="safari"></parameter>-->
+<!--        <parameter name="platform" value="Windows"></parameter>-->
+<!--        <classes>-->
+<!--            <class name="testCases.TC_HomePage"></class>-->
+<!--            <class name="testCases.TC_HomePage"></class>-->
+<!--        </classes>-->
+<!--    </test>-->
+
+
+
+</suite>
