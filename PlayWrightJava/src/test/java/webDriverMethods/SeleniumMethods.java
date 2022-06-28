@@ -4,11 +4,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.microsoft.playwright.*;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import utils.Reports;
 
 
@@ -20,7 +20,7 @@ public class SeleniumMethods extends Reports {
     public String AUTOMATE_USERNAME = "";
     public String AUTOMATE_ACCESS_KEY = "";
     public String URL;
-    public DesiredCapabilities dc;
+    //public DesiredCapabilities dc;
     public String version = "";
     Playwright playwrite;
     public BrowserContext browserContext;
@@ -29,7 +29,7 @@ public class SeleniumMethods extends Reports {
     public SeleniumMethods() {
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Messy/src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("src/test/resources/config.properties")));
             AUTOMATE_USERNAME = prop.getProperty("USERNAME");
             AUTOMATE_ACCESS_KEY = prop.getProperty("PASSWORD");
 
@@ -40,7 +40,7 @@ public class SeleniumMethods extends Reports {
         }
     }
 
-    private DesiredCapabilities getBrowser(String browser) {
+    /*private DesiredCapabilities getBrowser(String browser) {
         DesiredCapabilities dc = new DesiredCapabilities();
 
         switch (browser) {
@@ -71,7 +71,7 @@ public class SeleniumMethods extends Reports {
         }
         dc.setCapability("version", version);
         return dc;
-    }
+    }*/
 
     public Page startBrowser(String browserName, String platform, String applicationUrl, String tcname, String runIn) {
 
@@ -149,7 +149,7 @@ public class SeleniumMethods extends Reports {
     }
     public Properties init_prop(){
         try {
-            FileInputStream ip = new FileInputStream("/Users/manojs/PlayWrightJava/src/test/resources/config.properties");
+            FileInputStream ip = new FileInputStream("src/test/resources/config.properties");
             prop=new Properties();
             prop.load(ip);
         } catch (FileNotFoundException e) {
@@ -158,5 +158,15 @@ public class SeleniumMethods extends Reports {
             e.printStackTrace();
         }
         return prop;
+    }
+
+    public long takeSnap(){
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        try {
+            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot.png")));
+        } catch (Exception e) {
+            System.out.println("The browser has been closed.");
+        }
+        return number;
     }
 }

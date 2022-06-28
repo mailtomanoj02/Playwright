@@ -10,7 +10,6 @@ repositories {
 }
 
 dependencies {
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.2.2'
     testImplementation group: 'org.testng', name: 'testng', version: '7.4.0'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.21'
     implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'

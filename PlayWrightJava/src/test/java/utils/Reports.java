@@ -48,13 +48,13 @@ public abstract class Reports {
         return test;
     }
 
-    //public abstract long takeScreenShot();
+    public abstract long takeSnap();
 
     public void reportStep(String desc, String status, boolean bSnap) throws IOException {
 
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Messy/src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("src/test/resources/config.properties")));
 
             imagePath = prop.getProperty("Imagepath");
 
