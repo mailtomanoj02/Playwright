@@ -1,0 +1,6 @@
+{
+  "loginButton": "(//a[@id='header-logout'])",
+  "signInButton": "Manoj",
+  "postcodeSearch": "//input[@id='home-postcode']",
+  "findTakeaway": "//button[@id='home-findtakeaway']"
+}

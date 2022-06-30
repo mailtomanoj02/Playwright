@@ -21,7 +21,7 @@ public abstract class Reports {
 
     public ExtentSparkReporter html;
     public static ExtentReports extent;
-    public ExtentTest test, suiteTest;
+    public static ExtentTest test, suiteTest;
     public String testCaseName, testNodes, testDescription, category, authors, imagePath;
 
 
@@ -48,13 +48,14 @@ public abstract class Reports {
         return test;
     }
 
-    public abstract long takeSnap();
+    //public abstract long takeScreenShot();
 
     public void reportStep(String desc, String status, boolean bSnap) throws IOException {
+        System.out.println(test);
 
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Playwright/PlayWrightJava/src/test/resources/config.properties")));
 
             imagePath = prop.getProperty("Imagepath");
 

@@ -1,26 +1,24 @@
 package webDriverMethods;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.nio.file.Paths;
+import java.io.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.microsoft.playwright.*;
-import utils.Reports;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import utils.JsonReader;
 
 
-
-public class SeleniumMethods extends Reports {
+public class SeleniumMethods extends JsonReader {
     Browser browsers;
     public Page page;
     private Logger log = Logger.getLogger(this.getClass().getName());
     public String AUTOMATE_USERNAME = "";
     public String AUTOMATE_ACCESS_KEY = "";
     public String URL;
-    //public DesiredCapabilities dc;
+    public DesiredCapabilities dc;
     public String version = "";
     Playwright playwrite;
     public BrowserContext browserContext;
@@ -29,7 +27,7 @@ public class SeleniumMethods extends Reports {
     public SeleniumMethods() {
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Messy/src/test/resources/config.properties")));
             AUTOMATE_USERNAME = prop.getProperty("USERNAME");
             AUTOMATE_ACCESS_KEY = prop.getProperty("PASSWORD");
 
@@ -40,7 +38,7 @@ public class SeleniumMethods extends Reports {
         }
     }
 
-    /*private DesiredCapabilities getBrowser(String browser) {
+    private DesiredCapabilities getBrowser(String browser) {
         DesiredCapabilities dc = new DesiredCapabilities();
 
         switch (browser) {
@@ -71,7 +69,7 @@ public class SeleniumMethods extends Reports {
         }
         dc.setCapability("version", version);
         return dc;
-    }*/
+    }
 
     public Page startBrowser(String browserName, String platform, String applicationUrl, String tcname, String runIn) {
 
@@ -142,6 +140,7 @@ public class SeleniumMethods extends Reports {
         }
     }
     public String getTitle(){
+
         return page.title();
     }
     public String getHomePageUrl(){
@@ -149,7 +148,7 @@ public class SeleniumMethods extends Reports {
     }
     public Properties init_prop(){
         try {
-            FileInputStream ip = new FileInputStream("src/test/resources/config.properties");
+            FileInputStream ip = new FileInputStream("/Users/manojs/PlayWrightJava/src/test/resources/config.properties");
             prop=new Properties();
             prop.load(ip);
         } catch (FileNotFoundException e) {
@@ -160,13 +159,51 @@ public class SeleniumMethods extends Reports {
         return prop;
     }
 
-    public long takeSnap(){
-        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+    public void click(String ele){
         try {
-            page.screenshot(new Page.ScreenshotOptions().setPath(Paths.get("screenshot.png")));
+            if(page.locator(ele).isEnabled()) {
+                page.click(ele);
+                reportStep("Element has clicked", "PASS",true);
+            }
         } catch (Exception e) {
-            System.out.println("The browser has been closed.");
+            page.locator(ele).scrollIntoViewIfNeeded();
+            try {
+                if (page.locator(ele).isEnabled()) {
+                    page.click(ele);
+                }
+            }catch (Exception i){
+                reportStep("Element has not clicked","FAIL");
+            }
         }
-        return number;
+    }
+
+    public void verifyDisplayed(String ele) throws IOException {
+        try {
+            page.locator(ele).isVisible();
+            reportStep("Element " + ele +" is visible","PASS",true);
+        }catch (Exception e){
+            reportStep("Element " + ele +" is not visible","PASS");
+        }
+
+    }
+    public void enterText(String ele,String enterText){
+        try{
+            page.locator(ele).fill("");
+            page.locator(ele).fill(enterText);
+            reportStep("Entered text as "+enterText,"PASS",true);
+        }catch (Exception e){
+            reportStep("Text cannot be entered","FAIL");
+        }
+    }
+
+    public void getText(String ele,String attribute){
+        try{
+            String text=page.locator(ele).getAttribute(attribute);
+            System.out.println(text);
+
+
+        }catch (Exception e){
+
+        }
     }
 }
