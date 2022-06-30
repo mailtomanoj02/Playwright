@@ -1,19 +1,17 @@
 package webDriverMethods;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.microsoft.playwright.*;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
-import utils.Reports;
+import utils.JsonReader;
 
 
-
-public class SeleniumMethods extends Reports {
+public class SeleniumMethods extends JsonReader {
     Browser browsers;
     public Page page;
     private Logger log = Logger.getLogger(this.getClass().getName());
@@ -142,6 +140,7 @@ public class SeleniumMethods extends Reports {
         }
     }
     public String getTitle(){
+
         return page.title();
     }
     public String getHomePageUrl(){
@@ -158,5 +157,53 @@ public class SeleniumMethods extends Reports {
             e.printStackTrace();
         }
         return prop;
+    }
+
+    public void click(String ele){
+        try {
+            if(page.locator(ele).isEnabled()) {
+                page.click(ele);
+                reportStep("Element has clicked", "PASS",true);
+            }
+        } catch (Exception e) {
+            page.locator(ele).scrollIntoViewIfNeeded();
+            try {
+                if (page.locator(ele).isEnabled()) {
+                    page.click(ele);
+                }
+            }catch (Exception i){
+                reportStep("Element has not clicked","FAIL");
+            }
+        }
+    }
+
+    public void verifyDisplayed(String ele) throws IOException {
+        try {
+            page.locator(ele).isVisible();
+            reportStep("Element " + ele +" is visible","PASS",true);
+        }catch (Exception e){
+            reportStep("Element " + ele +" is not visible","PASS");
+        }
+
+    }
+    public void enterText(String ele,String enterText){
+        try{
+            page.locator(ele).fill("");
+            page.locator(ele).fill(enterText);
+            reportStep("Entered text as "+enterText,"PASS",true);
+        }catch (Exception e){
+            reportStep("Text cannot be entered","FAIL");
+        }
+    }
+
+    public void getText(String ele,String attribute){
+        try{
+            String text=page.locator(ele).getAttribute(attribute);
+            System.out.println(text);
+
+
+        }catch (Exception e){
+
+        }
     }
 }

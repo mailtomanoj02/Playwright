@@ -18,6 +18,8 @@ dependencies {
     implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
     implementation group: 'com.aventstack', name: 'extentreports', version: '5.0.9'
     implementation group: 'com.microsoft.playwright', name: 'playwright', version: '1.22.0'
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
 }
 
 
