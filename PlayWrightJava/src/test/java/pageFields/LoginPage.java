@@ -4,7 +4,6 @@ package pageFields;
 import com.microsoft.playwright.Page;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
-import org.openqa.selenium.devtools.DevTools;
 import webDriverMethods.ProjectMethods;
 
 import java.io.IOException;

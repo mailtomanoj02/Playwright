@@ -55,7 +55,7 @@ public abstract class Reports {
 
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Playwright/PlayWrightJava/src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("./src/test/resources/Json/foodhub.json")));
 
             imagePath = prop.getProperty("Imagepath");
 

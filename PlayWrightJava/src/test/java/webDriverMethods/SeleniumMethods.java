@@ -5,9 +5,6 @@ import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.microsoft.playwright.*;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.remote.DesiredCapabilities;
 import utils.JsonReader;
 
 
@@ -18,7 +15,6 @@ public class SeleniumMethods extends JsonReader {
     public String AUTOMATE_USERNAME = "";
     public String AUTOMATE_ACCESS_KEY = "";
     public String URL;
-    public DesiredCapabilities dc;
     public String version = "";
     Playwright playwrite;
     public BrowserContext browserContext;
@@ -27,7 +23,7 @@ public class SeleniumMethods extends JsonReader {
     public SeleniumMethods() {
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Messy/src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("./src/test/resources/Json/foodhub.json")));
             AUTOMATE_USERNAME = prop.getProperty("USERNAME");
             AUTOMATE_ACCESS_KEY = prop.getProperty("PASSWORD");
 
@@ -38,38 +34,6 @@ public class SeleniumMethods extends JsonReader {
         }
     }
 
-    private DesiredCapabilities getBrowser(String browser) {
-        DesiredCapabilities dc = new DesiredCapabilities();
-
-        switch (browser) {
-            case "Chrome":
-                version = "latest";
-                dc = new DesiredCapabilities();
-                break;
-
-            case "Firefox":
-                version = "latest";
-                dc = new DesiredCapabilities();
-                break;
-
-            case "Edge":
-                version = "latest";
-                dc = new DesiredCapabilities();
-                break;
-
-            case "InternetExplorer":
-                version = "latest";
-                dc = new DesiredCapabilities();
-                break;
-
-            case "Safari":
-                version = "latest";
-                dc = new DesiredCapabilities();
-                break;
-        }
-        dc.setCapability("version", version);
-        return dc;
-    }
 
     public Page startBrowser(String browserName, String platform, String applicationUrl, String tcname, String runIn) {
 
@@ -148,7 +112,7 @@ public class SeleniumMethods extends JsonReader {
     }
     public Properties init_prop(){
         try {
-            FileInputStream ip = new FileInputStream("/Users/manojs/PlayWrightJava/src/test/resources/config.properties");
+            FileInputStream ip = new FileInputStream("./src/test/resources/Json/foodhub.json");
             prop=new Properties();
             prop.load(ip);
         } catch (FileNotFoundException e) {

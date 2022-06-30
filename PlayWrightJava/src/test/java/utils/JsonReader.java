@@ -10,7 +10,7 @@ import java.io.IOException;
 public class JsonReader extends Reports{
     public JSONObject getDataFromJson() throws IOException, ParseException {
         JSONParser jsonParser=new JSONParser();
-        FileReader fileReader=new FileReader("/Users/manojs/Documents/Automation/Playwright/PlayWrightJava/src/test/resources/Json/foodhub.json");
+        FileReader fileReader=new FileReader("./src/test/resources/Json/foodhub.json");
         Object obj=jsonParser.parse(fileReader);
         JSONObject jsonObject=(JSONObject) obj;
         return jsonObject;
