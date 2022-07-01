@@ -7,7 +7,7 @@ import org.json.simple.parser.ParseException;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class JsonReader extends Reports{
+public abstract class JsonReader extends Reports{
     public JSONObject getDataFromJson() throws IOException, ParseException {
         JSONParser jsonParser=new JSONParser();
         FileReader fileReader=new FileReader("/Users/manojs/Documents/Automation/Playwright/PlayWrightJava/src/test/resources/Json/foodhub.json");

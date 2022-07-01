@@ -16,6 +16,7 @@ import com.aventstack.extentreports.model.Media;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Protocol;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import org.testng.Assert;
 
 public abstract class Reports {
 
@@ -48,14 +49,14 @@ public abstract class Reports {
         return test;
     }
 
-    //public abstract long takeScreenShot();
+    public abstract long takeSnap();
 
-    public void reportStep(String desc, String status, boolean bSnap) throws IOException {
+    public void reportStep(String desc, String status,boolean bSnap) throws IOException {
         System.out.println(test);
 
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("/Users/manojs/Documents/Automation/Playwright/PlayWrightJava/src/test/resources/config.properties")));
+            prop.load(new FileInputStream(new File("./src/test/resources/config.properties")));
 
             imagePath = prop.getProperty("Imagepath");
 
@@ -68,8 +69,8 @@ public abstract class Reports {
         Media img = null;
         if (bSnap && !status.equalsIgnoreCase("INFO")) {
 
-            long snapNumber = 1000000L;
-            //snapNumber = takeScreenShot();
+            long snapNumber= (long) Math.floor(Math.random() * 900000000L) + 10000000L;;
+            //snapNumber = takeSnap();
             if (imagePath == null) {
                 img = MediaEntityBuilder.createScreenCaptureFromPath("./../reports/images/" + snapNumber + ".png")
                         .build();
