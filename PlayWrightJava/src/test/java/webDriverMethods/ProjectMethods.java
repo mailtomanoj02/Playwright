@@ -35,12 +35,12 @@ public class ProjectMethods extends SeleniumMethods {
     @AfterMethod(alwaysRun = true)
     public void afterMethod() throws IOException {
         endResult();
+        endTestcase();
         closeAllBrowsers();
     }
 
     @AfterTest
     public void afterTest() {
-
     }
 
 //    @AfterClass
@@ -50,7 +50,6 @@ public class ProjectMethods extends SeleniumMethods {
 
     @AfterSuite
     public void afterSuite() {
-        endResult();
 
     }
 

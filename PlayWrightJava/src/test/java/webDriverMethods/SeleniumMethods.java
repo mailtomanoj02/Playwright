@@ -1,10 +1,17 @@
 package webDriverMethods;
 
 import java.io.*;
+import java.net.URLEncoder;
+import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.logging.Logger;
 
+import com.google.gson.JsonObject;
 import com.microsoft.playwright.*;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.testng.Assert;
 import utils.JsonReader;
 
 
@@ -15,6 +22,7 @@ public class SeleniumMethods extends JsonReader {
     public String AUTOMATE_USERNAME = "";
     public String AUTOMATE_ACCESS_KEY = "";
     public String URL;
+    public DesiredCapabilities dc;
     public String version = "";
     Playwright playwrite;
     public BrowserContext browserContext;
@@ -23,7 +31,7 @@ public class SeleniumMethods extends JsonReader {
     public SeleniumMethods() {
         Properties prop = new Properties();
         try {
-            prop.load(new FileInputStream(new File("./src/test/resources/Json/foodhub.json")));
+            prop.load(new FileInputStream(new File("./src/test/resources/config.properties")));
             AUTOMATE_USERNAME = prop.getProperty("USERNAME");
             AUTOMATE_ACCESS_KEY = prop.getProperty("PASSWORD");
 
@@ -34,12 +42,11 @@ public class SeleniumMethods extends JsonReader {
         }
     }
 
-
     public Page startBrowser(String browserName, String platform, String applicationUrl, String tcname, String runIn) {
 
         if (runIn.equalsIgnoreCase("local")) {
-            Properties properties=init_prop();
-            Boolean headless=new Boolean(properties.getProperty("headless"));
+            Properties properties = init_prop();
+            Boolean headless = new Boolean(properties.getProperty("headless"));
             System.out.println(headless);
             playwrite = Playwright.create();
 
@@ -71,14 +78,35 @@ public class SeleniumMethods extends JsonReader {
 
             page = browserContext.newPage();
 
+        } else if(runIn.equalsIgnoreCase("remote")) {
+            try (Playwright playwright = Playwright.create()) {
+                JsonObject capabilitiesObject = new JsonObject();
+                capabilitiesObject.addProperty("browser", "chrome");    // allowed browsers are `chrome`, `edge`, `playwright-chromium`, `playwright-firefox` and `playwright-webkit`
+                capabilitiesObject.addProperty("browser_version", "latest");
+                capabilitiesObject.addProperty("os", "osx");
+                capabilitiesObject.addProperty("os_version", "monterey");
+                capabilitiesObject.addProperty("name", "Playwright first single test");
+                capabilitiesObject.addProperty("build", "playwright-java-1");
+                capabilitiesObject.addProperty("browserstack.username", AUTOMATE_USERNAME);
+                capabilitiesObject.addProperty("browserstack.accessKey", AUTOMATE_ACCESS_KEY);
+
+                BrowserType chromium = playwright.chromium();
+                String caps = URLEncoder.encode(capabilitiesObject.toString(), "utf-8");
+                String ws_endpoint = "wss://cdp.browserstack.com/playwright?caps=" + caps;
+                Browser browser = chromium.connect(ws_endpoint);
+                page = browser.newPage();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
-        try {
-            page.navigate(applicationUrl);
-            reportStep("[" + browserName + "] launched successfully", "INFO");
-        } catch (Exception e) {
-            reportStep("[" + browserName + "]: could not be launched", "FAIL");
-        }
-        return page;
+            try {
+                page.navigate(applicationUrl);
+                reportStep("[" + browserName + "] launched successfully", "INFO");
+            } catch (Exception e) {
+                reportStep("[" + browserName + "]: could not be launched", "FAIL");
+            }
+            return page;
+
     }
 
 
@@ -112,7 +140,7 @@ public class SeleniumMethods extends JsonReader {
     }
     public Properties init_prop(){
         try {
-            FileInputStream ip = new FileInputStream("./src/test/resources/Json/foodhub.json");
+            FileInputStream ip = new FileInputStream("./src/test/resources/config.properties");
             prop=new Properties();
             prop.load(ip);
         } catch (FileNotFoundException e) {
@@ -152,6 +180,7 @@ public class SeleniumMethods extends JsonReader {
     }
     public void enterText(String ele,String enterText){
         try{
+            page.locator(ele).waitFor();
             page.locator(ele).fill("");
             page.locator(ele).fill(enterText);
             reportStep("Entered text as "+enterText,"PASS",true);
@@ -169,5 +198,13 @@ public class SeleniumMethods extends JsonReader {
         }catch (Exception e){
 
         }
+    }
+
+    public long takeSnap(){
+        long number = (long) Math.floor(Math.random() * 900000000L) + 10000000L;
+        page.screenshot(new Page.ScreenshotOptions()
+                .setPath(Paths.get("screenshot.png"))
+                .setFullPage(true));
+        return number;
     }
 }

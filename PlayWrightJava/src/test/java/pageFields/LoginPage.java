@@ -25,7 +25,6 @@ public class LoginPage extends ProjectMethods{
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        click(data.get("loginButton").toString());
         enterText(data.get("postcodeSearch").toString(),"AA11AA");
         getText(data.get("findTakeaway").toString(),"Inner Text");
         getText(data.get("findTakeaway").toString(),"type");
